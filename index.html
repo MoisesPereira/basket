@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html><head>
+		<meta charset="UTF-8">
+		<title>NBA Hoops</title>
+		<style type="text/css">
+			html {
+				overflow: hidden;
+				width: 100%;
+				height: 100%;
+			}
+			body {
+				background-image: url("http://narawagames.appspot.com/nba-hoops/court.png");
+				margin: 0px;
+				height: 9999px;
+				overflow: hidden;
+			}
+			#ball {
+				height: 124px;
+				width: 124px;
+				top: 75%;
+				z-index: 500;
+				background-image: url("http://narawagames.appspot.com/nba-hoops/ball.png");
+			}
+			#hoop1 {
+				width: 214px;
+				height: 175px;
+				top: 250px;
+				margin-left: -107px;
+				z-index: 100;
+				background-image: url("http://narawagames.appspot.com/nba-hoops/hoop2.png");
+			}
+			#hoop2 {
+				width: 600px;
+				height: 300px;
+				top: 245px;
+				margin: -230px -300px;
+				background-image: url("http://narawagames.appspot.com/nba-hoops/hoop.png");
+			}
+			.thing {
+				position: absolute;
+				left: 50%;
+				background-size: 100% 100%;
+			}
+			.side {
+				width: 28px;
+				height: 40px;
+				top: 250px;
+				z-index: 1000;
+			}
+			#side1 {
+				margin-left: -102px;
+			}
+			#side2 {
+				margin-left: 74px;
+			}
+		</style>
+		<script src="NBA%20Hoops_files/analytics.js" async=""></script><script type="text/javascript">
+			function drag(event) {
+				window.mousedown=true;
+				window.coords=[event.clientX-62, event.clientY-62];
+			}
+			function place(event) {
+				var hoop=document.getElementById("hoop1");
+				var ball=document.getElementById("ball");
+				var coords2=[event.clientX-62, event.clientY-62];
+				var count=0;
+				var falldown=0;
+				var Ycoords=coords2[1]-window.coords[1];
+				var Xcoords=coords2[0]-window.coords[0];
+				if (window.mousedown==true) {
+					ball.style.top=coords2[1]+"px";
+					ball.style.left=coords2[0]+"px";
+					var shoot=setInterval(function () {
+						if (ball.offsetTop>=window.innerHeight) {
+							clearInterval(shoot);
+						}
+						ball.style.left=ball.offsetLeft-(Xcoords/8)+"px";
+						ball.style.top=ball.offsetTop-(Ycoords/8-falldown)+"px";
+						falldown=falldown+1;
+						if (ball.offsetLeft>hoop.offsetLeft && ball.offsetLeft+100<hoop.offsetLeft+204 && ball.offsetTop<hoop.offsetTop+18) {
+							ball.style.zIndex=50;
+						}
+						else {
+							ball.style.zIndex=125;
+						}
+						if (document.elementFromPoint(ball.offsetLeft+62, ball.offsetTop+99)!=null) {
+							if (document.elementFromPoint(ball.offsetLeft+124, ball.offsetTop+99).className=="side thing") {
+								Xcoords=(hoop.offsetLeft-62)-(hoop.offsetLeft-124);
+								Ycoords=(hoop.offsetTop-62)-(hoop.offsetTop-162);
+								falldown=0;
+							}
+							else if (document.elementFromPoint(ball.offsetLeft, ball.offsetTop+99).className=="side thing") {
+								Xcoords=(hoop.offsetLeft-124)-(hoop.offsetLeft-62);
+								Ycoords=(hoop.offsetTop-62)-(hoop.offsetTop-162);
+								falldown=0;
+							}
+						}
+					}, 15);
+				}
+				window.mousedown=false;
+			}
+		</script>
+	</head>
+	<body onmousedown="drag(event)" onmouseup="place(event)">
+		<div style="top: 985px; left: 1094px; z-index: 125;" id="ball" class="thing"></div>
+		<div id="hoop1" class="thing"></div>
+		<div id="hoop2" class="thing"></div>
+		<div id="side1" class="side thing"></div>
+		<div id="side2" class="side thing"></div>
+		<audio loop="" autoplay="autoplay" src="http://narawagames.appspot.com/nba-hoops/basketball.mp3"></audio>
+	
+</body></html>
